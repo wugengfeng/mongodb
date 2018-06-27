@@ -25,6 +25,6 @@ public class MongodbApplicationTests {
 	@Test
 	public void test(){
 		List<Student> list = studentRepository.findAll();
-		System.out.println(list.size());
+
 	}
 }
