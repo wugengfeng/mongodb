@@ -11,4 +11,6 @@ public interface StudentService extends BaseService<Student, String> {
     long updateById(Student student);
 
     long updateByName(Student student);
+
+    long deleteOperation(Student student);
 }

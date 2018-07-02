@@ -1,5 +1,6 @@
 package com.wugf.service.impl;
 
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.wugf.model.Student;
 import com.wugf.service.StudentService;
@@ -48,5 +49,16 @@ public class StudentServiceImpl extends BaseServiceImpl<Student, String> impleme
 
         UpdateResult result = mongoTemplate.updateMulti(query, update, Student.class);
         return result.getModifiedCount();
+    }
+
+    @Override
+    public long deleteOperation(Student student) {
+        Query query = new Query();
+        Criteria criteria = Criteria.where("name").is(student.getName());
+        // 这句很重要
+        query.addCriteria(criteria);
+
+        DeleteResult result = mongoTemplate.remove(query, Student.class);
+        return result.getDeletedCount();
     }
 }
