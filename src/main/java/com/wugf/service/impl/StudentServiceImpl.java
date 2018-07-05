@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by acer on 2018-6-27.
  */
@@ -60,5 +62,62 @@ public class StudentServiceImpl extends BaseServiceImpl<Student, String> impleme
 
         DeleteResult result = mongoTemplate.remove(query, Student.class);
         return result.getDeletedCount();
+    }
+
+    @Override
+    public List<Student> ne(Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").ne(student.getName()));
+
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> lt(Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("age").lt(student.getAge()));
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> lte(Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("age").lte(student.getAge()));
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> gt(Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("age").gt(student.getAge()));
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> gte(Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("age").gte(student.getAge()));
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> in(String ...names) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").in(names));
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> nin(String ...names) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").nin(names));
+        return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public List<Student> regex(Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").regex(student.getName()));
+        return mongoTemplate.find(query, Student.class);
     }
 }
