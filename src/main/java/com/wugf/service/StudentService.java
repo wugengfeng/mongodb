@@ -2,6 +2,7 @@ package com.wugf.service;
 
 import com.wugf.model.Student;
 import com.wugf.service.base.BaseService;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 
 import java.util.List;
 
@@ -73,4 +74,38 @@ public interface StudentService extends BaseService<Student, String> {
      * @return
      */
     List<Student> regex(Student student);
+
+    /**
+     * 获取最大值
+     * @return
+     */
+    AggregationResults<Student> max();
+
+    /**
+     * 获取最小值
+     * @return
+     */
+    AggregationResults<Student> min();
+
+    /**
+     * 获取平均值
+     * @return
+     */
+    AggregationResults<Student> avg();
+
+    /**
+     * 求总和
+     * @return
+     */
+    AggregationResults<Student> sum();
+
+    /**
+     * 获取第一条数据
+     */
+    AggregationResults<Student> first();
+
+    /**
+     * 获取最后一条数据
+     */
+    AggregationResults<Student> last();
 }

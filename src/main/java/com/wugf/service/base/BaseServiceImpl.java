@@ -98,7 +98,7 @@ public abstract class BaseServiceImpl<T, ID>{
     }
 
     public <S extends T> long count(Example<S> example) {
-        return mongoRepository.count();
+        return mongoRepository.count(example);
     }
 
     public <S extends T> boolean exists(Example<S> example) {

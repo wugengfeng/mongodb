@@ -7,6 +7,8 @@ import com.wugf.service.StudentService;
 import com.wugf.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -119,5 +121,73 @@ public class StudentServiceImpl extends BaseServiceImpl<Student, String> impleme
         Query query = new Query();
         query.addCriteria(Criteria.where("name").regex(student.getName()));
         return mongoTemplate.find(query, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> max() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group()
+                .max("age")
+                .as("age")
+        );
+        // 这里可以设置返回的类型，起的别名属性会映射到返回类型里面
+        AggregationResults<Student> results = mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+        return results;
+    }
+
+    @Override
+    public AggregationResults<Student> min() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group()
+                .min("age")
+                .as("age")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> avg() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group()
+                .avg("age")
+                .as("age")
+        );
+
+        AggregationResults<Student> results = mongoTemplate.aggregate(aggregation,Student.class,Student.class);
+        return results;
+    }
+
+    @Override
+    public AggregationResults<Student> sum() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group()
+                .sum("age")
+                .as("age")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> first() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group()
+                .first("age")
+                .as("age")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> last() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group()
+                .last("age")
+                .as("age")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
     }
 }
