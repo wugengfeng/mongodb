@@ -20,6 +20,8 @@ public class Student implements Serializable{
 
     private Integer age;
 
+    private String skip;
+
     private List<String> tags;
 
     public String getId() {
@@ -60,5 +62,13 @@ public class Student implements Serializable{
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public String getSkip() {
+        return skip;
+    }
+
+    public void setSkip(String skip) {
+        this.skip = skip;
     }
 }

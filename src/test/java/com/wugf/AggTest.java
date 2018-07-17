@@ -1,5 +1,6 @@
 package com.wugf;
 
+import com.alibaba.fastjson.JSON;
 import com.wugf.model.Student;
 import com.wugf.service.StudentService;
 import org.junit.Test;
@@ -63,5 +64,62 @@ public class AggTest extends BaseTest {
         Example<Student> example = Example.of(student);
 
         System.out.println(studentService.count(example));
+    }
+
+    /**
+     * 命令：db.student.aggregate([{$project:{name:1}}])
+     * 指定展示字段
+     */
+    @Test
+    public void project() {
+        AggregationResults<Student> results = studentService.project();
+        results.getMappedResults().forEach(student -> System.out.println(JSON.toJSONString(student)));
+    }
+
+    /**
+     * 命令：db.student.aggregate([
+                 {$match:{sex:"女"}},
+                 {$group:{_id:null,age:{$max:"$age"}}}
+                 ])
+        用于过滤数据，只输出符合条件的文档
+     */
+    @Test
+    public void match() {
+        AggregationResults<Student> results = studentService.match();
+        results.getMappedResults().forEach(student -> System.out.println(JSON.toJSONString(student)));
+    }
+
+    /**
+     * 命令：db.student.aggregate([{$skip:1},{$limit:1}])
+     */
+    @Test
+    public void skip() {
+        AggregationResults<Student> results = studentService.skip();
+        results.getMappedResults().forEach(student -> System.out.println(JSON.toJSONString(student)));
+    }
+
+    /**
+     * 命令：db.student.aggregate([
+             {$group:{_id:"$sex",count:{$sum:1}}},
+             {$sort:{"count":-1}}
+            ])
+     */
+    @Test
+    public void sort() {
+        AggregationResults<Student> results = studentService.sort();
+        results.getMappedResults().forEach(student -> System.out.println(JSON.toJSONString(student)));
+    }
+
+    /**
+     * 命令：
+     *  db.student.insertOne({name:"数组","sex":"男","age":25,"skip":["java","H5","Mysql"]})
+         db.student.aggregate([
+            {$unwind:"$skip"}
+         ])
+     */
+    @Test
+    public void unwind() {
+        AggregationResults<Student> results = studentService.unwind();
+        results.getMappedResults().forEach(student -> System.out.println(JSON.toJSONString(student)));
     }
 }

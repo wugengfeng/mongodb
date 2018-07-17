@@ -6,6 +6,7 @@ import com.wugf.model.Student;
 import com.wugf.service.StudentService;
 import com.wugf.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -186,6 +187,59 @@ public class StudentServiceImpl extends BaseServiceImpl<Student, String> impleme
                 Aggregation.group()
                 .last("age")
                 .as("age")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> project() {
+
+        Aggregation aggregation = Aggregation.newAggregation(
+
+                // 这里是需要展示的字段
+                Aggregation.project("name")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> match() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("sex").is("女")),
+                Aggregation.group().max("age").as("age")
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> skip() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.skip(1l),
+                Aggregation.limit(1l)
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> sort() {
+
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group("sex")
+                    .count().as("age"),
+                Aggregation.sort(Sort.by(Sort.Order.desc("age")))
+        );
+
+        return mongoTemplate.aggregate(aggregation, Student.class, Student.class);
+    }
+
+    @Override
+    public AggregationResults<Student> unwind() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.unwind("skip")
         );
 
         return mongoTemplate.aggregate(aggregation, Student.class, Student.class);

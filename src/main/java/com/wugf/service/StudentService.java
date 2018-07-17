@@ -108,4 +108,26 @@ public interface StudentService extends BaseService<Student, String> {
      * 获取最后一条数据
      */
     AggregationResults<Student> last();
+
+    /**
+     * 改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+     * @return
+     */
+    AggregationResults<Student> project();
+
+    /**
+     * 用于过滤数据，只输出符合条件的文档
+     * @return
+     */
+    AggregationResults<Student> match();
+
+    AggregationResults<Student> skip();
+
+    AggregationResults<Student> sort();
+
+    /**
+     * 将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+     * @return
+     */
+    AggregationResults<Student> unwind();
 }
